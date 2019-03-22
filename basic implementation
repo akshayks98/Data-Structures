@@ -1,0 +1,126 @@
+#include <iostream>
+using namespace std;
+
+class node
+{
+public:
+	int data;
+	node *next;
+};
+
+//inserting element in the last and initialising new element
+
+void appendl(node** n,int d)
+{
+	node* new_node = NULL;
+	node* last = *n;
+	new_node = new node();
+	new_node->data = d;
+	new_node->next = NULL;
+
+	if (*n == NULL)
+	{
+		*n = new_node;
+		return;
+	}
+	while (last->next != NULL)
+	{
+		last = last->next;
+	}
+
+	last->next = new_node;
+}
+
+//inserting elemnet in the front
+
+void pushl(node** n,int d)
+{
+	node* new_node = NULL;
+	new_node = new node();
+
+	new_node->data = d;
+	new_node->next = *n;
+
+	*n = new_node;
+}
+
+//inserting element in between
+
+void any(node* n,int d)
+{
+	if (n == NULL)
+	{
+		cout << "error" << endl;
+	}
+	
+	node* new_node = NULL;
+	new_node = new node();
+
+	new_node->data = d;
+	new_node->next = n->next;
+	n->next = new_node;
+}
+
+void deletel(node** n, int key)
+{
+	node* temp = *n;
+	node* s = NULL;
+	//if head holds the value
+	if (temp != NULL && temp->data == key)
+	{
+		*n = temp->next;
+		free(temp);
+		return;
+	}
+	//otherwise find and then delete it
+	while (temp != NULL && temp->data != key)
+	{
+		s = temp;
+		temp = temp->next;
+	}
+	//if key doesn't exist
+	if (temp == NULL)
+	{
+		return;
+	}
+	s->next = temp->next;
+	free(temp);
+}
+
+void print(node* n)
+{
+	while (n != NULL)
+	{
+		cout << n->data << " ";
+		n = n->next;
+	}
+}
+int main() {
+	node* head = NULL;
+
+/*	node* second = NULL;   //BASIC IMPLEMENTATION
+	node* third = NULL;
+
+	head = new node();
+	second = new node();
+	third = new node();
+	
+	head->data = 1;
+	head->next = second;
+	second->data = 2;
+	second->next = third;
+	third->data = 3;
+	third->next = NULL;
+	print(head);
+*/
+
+	appendl(&head, 6);
+	pushl(&head, 7);
+	pushl(&head, 1);
+	appendl(&head, 4);
+	any(head->next->next, 8);
+	deletel(&head, 6);
+	print(head);
+	system("pause");
+	return 0;
+}

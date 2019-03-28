@@ -1,0 +1,127 @@
+#include<iostream>
+#include<bits/stdc++.h>
+using namespace std;
+
+class node
+{
+public:
+	int data;
+	node* left;
+	node* right;
+};
+
+class node* search(node* n, int d)
+{
+	if (n == NULL || n->data == d)
+	{
+		return n;
+	}
+	if (n->data < d)
+	{
+		return search(n->right, d);
+	}
+	else
+	{
+		return search(n->left, d);
+	}
+}
+
+class node* new_node(int d)
+{
+	node* s = NULL;
+	s = new node();
+	s->data = d;
+	s->left = s->right = NULL;
+	return s;
+}
+
+void in_order(node* n)
+{
+	if (n != NULL)
+	{
+		in_order(n->left);
+		cout << n->data << " ";
+		in_order(n->right);
+	}
+}
+
+class node* insert(node* n, int d)
+{
+	if (n == NULL)
+	{
+		n = new_node(d);
+
+	}
+	if (d < n->data)
+	{
+		n->left = insert(n->left, d);
+	}
+	else if (d > n->data)
+	{
+		n->right = insert(n->right, d);
+	}
+	return n;
+}
+
+class node* minval(node* n)
+{
+	if (n->left == NULL)
+	{
+		return n;
+	}
+	return minval(n->left);
+}
+
+class node* deletenode(node* n, int d)
+{
+	if (n == NULL)
+		return n;
+	if (d < n->data)
+	{
+		n->left = deletenode(n->left, d);
+	}
+	else if (d > n->data)
+	{
+		n->right = deletenode(n->right, d);
+	}
+	else
+	{
+		if (n->left == NULL)
+		{
+			node* s = n->right;
+			free(n);
+			return s;
+		}
+		else if (n->right == NULL)
+		{
+			node* s = n->left;
+			free(n);
+			return s;
+		}
+		class node* temp = minval(n->right);
+		n->data = temp->data;
+		n->right = deletenode(n->right, temp->data);
+		
+	}
+	return n;
+}
+
+int main()
+{
+	node* root = NULL;
+	root = insert(root, 50);
+	insert(root, 30);
+	insert(root, 20);
+	insert(root, 40);
+	insert(root, 70);
+	insert(root, 60);
+	insert(root, 80);
+
+	in_order(root);
+	deletenode(root, 40);
+	cout << endl;
+	in_order(root);
+
+	system("pause");
+	return 0;
+}
